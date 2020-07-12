@@ -82,6 +82,7 @@ func New(authConfig *GoogleAuthConfig) *GoogleAuth {
 		errorURL:      authConfig.ErrorURL,
 		states:        make(map[string]*state),
 		pruneInterval: defaultPruneInterval,
+		loginCallback: authConfig.LoginCallback,
 	}
 
 	if a.errorURL == "" {
