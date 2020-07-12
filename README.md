@@ -1,5 +1,9 @@
 # Simple Google Login
 
+Import the following package
+
+    "github.com/borud/gin/pkg/auth"
+
 This is a work in progress.  
 
 I got tired of baroque libraries that pull inn all manner of unwanted
@@ -13,4 +17,6 @@ sure you have the following environment variables set.
 
 You can create your client credentials at:
 https://console.developers.google.com/apis/credentials
+
+
 
