@@ -14,9 +14,10 @@ const (
 
 func main() {
 	googleAuth := auth.New(&auth.GoogleAuthConfig{
-		ClientID:     os.Getenv("GOOGLE_CLIENT_ID"),
-		ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
-		CallbackURL:  "http://localhost:3000/google/callback",
+		ClientID:      os.Getenv("GOOGLE_CLIENT_ID"),
+		ClientSecret:  os.Getenv("GOOGLE_CLIENT_SECRET"),
+		CallbackURL:   "http://localhost:3000/google/callback",
+		LoginCallback: loginCallback,
 	})
 
 	http.HandleFunc("/", mainHandler)
@@ -51,4 +52,10 @@ func errorHandler(w http.ResponseWriter, r *http.Request) {
   </body>
 </html>
 `)
+}
+
+func loginCallback(w http.ResponseWriter, r *http.Request, userinfo *auth.Userinfo) {
+	html := `<html><head><title>Wohoo></title></head><body>Hello %s<p><img src="%s"</body></html>`
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	fmt.Fprintf(w, html, userinfo.Name, userinfo.Picture)
 }
