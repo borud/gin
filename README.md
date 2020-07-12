@@ -18,5 +18,6 @@ sure you have the following environment variables set.
 You can create your client credentials at:
 https://console.developers.google.com/apis/credentials
 
+# Examples
 
-
+Please see the `example.go` file for a minimal example.
