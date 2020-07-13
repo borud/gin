@@ -55,7 +55,11 @@ func errorHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func loginCallback(w http.ResponseWriter, r *http.Request, userinfo *auth.Userinfo) {
-	html := `<html><head><title>Wohoo></title></head><body>Hello %s<p><img src="%s"</body></html>`
+	html := `
+<html>
+  <head><title>Wohoo></title></head>
+  <body>Hello %s<p><img src="%s"</body>
+</html>`
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	fmt.Fprintf(w, html, userinfo.Name, userinfo.Picture)
 }
