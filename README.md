@@ -1,5 +1,7 @@
 # Simple Google Login
 
+[![Godoc](http://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/borud/gin/pkg/auth)
+
 **This is a work in progress.**
 
 I got tired of baroque libraries that pull inn all manner of unwanted
@@ -9,6 +11,46 @@ takes care of only the Google login.
 Import the following package
 
     "github.com/borud/gin/pkg/auth"
+
+## Abbreviated example
+
+Here is an abbreviated example of how to use this module.  The
+`loginCallback` is where you would create the session etc, but since
+people use different libraries for handling sessions we leave this
+part up to you.
+
+    package main
+    
+    import (
+    	"fmt"
+    	"net/http"
+    	"os"
+    
+    	"github.com/borud/gin/pkg/auth"
+    )
+    
+    func main() {
+    	googleAuth := auth.New(&auth.GoogleAuthConfig{
+    		ClientID:      os.Getenv("GOOGLE_CLIENT_ID"),
+    		ClientSecret:  os.Getenv("GOOGLE_CLIENT_SECRET"),
+    		CallbackURL:   "http://localhost:3000/google/callback",
+    		LoginCallback: loginCallback,
+    	})
+    
+    	http.HandleFunc("/google/login", googleAuth.GoogleLoginHandler)
+    	http.HandleFunc("/google/callback", googleAuth.GoogleCallbackHandler)
+    	http.ListenAndServe(":3000", nil)
+    }
+    
+    func loginCallback(w http.ResponseWriter, r *http.Request, userinfo *auth.Userinfo) {
+    	html := `<html><head><title>Wohoo></title></head><body>Hello %s<p><img src="%s"</body></html>`
+    	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    	fmt.Fprintf(w, html, userinfo.Name, userinfo.Picture)
+    }
+    
+
+Please see the [example.go](example.go) file for a more complete example.
+
 
 ## Session management
 
@@ -42,6 +84,3 @@ sure you have the following environment variables set.
 You can create your client credentials at:
 https://console.developers.google.com/apis/credentials
 
-## Examples
-
-Please see the [example.go](example.go) file for a minimal example.
